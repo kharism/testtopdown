@@ -3,6 +3,7 @@ package scenes
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -42,7 +43,6 @@ func (tiledScenes *TiledScenes) Update() error {
 	}
 	return nil
 }
-
 func (tiledScenes *TiledScenes) Draw(screen *ebiten.Image) {
 	// base := ebiten.NewImage(TileWidth*WidthInTile, TileHeight*HeightInTile)
 	tiledScenes.ecs.DrawLayer(0, screen)
@@ -85,7 +85,14 @@ func (s *TiledScenes) generateInteractiblesMap(tiledMap *tiled.Map) []system.Int
 			k.targetCol = o.Properties.GetInt("NextSceneLocationX")
 			objectsTile[realIdx] = k
 		} else if o.Type == "board" {
-
+			k := &BoardObject{
+				Object: o,
+				Texts:  strings.Split(o.Properties.GetString("message"), "\n\n"),
+				scene:  s,
+			}
+			//hanashiScene.Events[0].Execute(hanashiScene)
+			//s.Scene = hanashiScene
+			objectsTile[realIdx] = k
 		}
 
 	}
@@ -219,6 +226,11 @@ func (s *TiledScenes) Load(state SceneData, manager stagehand.SceneController[Sc
 	s.ecs.AddRenderer(0, tileRenderer.RenderBg)
 	s.ecs.AddRenderer(1, spriteRenderer.RenderSprite)
 	s.ecs.AddSystem(playerMovement.Update)
+
+	hanashiScene := GetHanashiScene()
+	hanashiScene.Done = func() {
+		s.Scene = nil
+	}
 
 }
 
