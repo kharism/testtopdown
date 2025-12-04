@@ -85,7 +85,6 @@ func (p *PlayerMovement) Update(ecs *ecs.ECS) {
 			spriteData.Facing = assets.PLAYER_FACE_FRONT
 			if interactible != nil {
 				interactible.Interact(ecs)
-				return
 			}
 			p.keepMoving = false
 			SpeedY = 0.0
@@ -111,10 +110,9 @@ func (p *PlayerMovement) Update(ecs *ecs.ECS) {
 			spriteData.Facing = assets.PLAYER_FACE_LEFT
 			if interactible != nil {
 				interactible.Interact(ecs)
-				return
 			}
 			p.keepMoving = false
-			SpeedY = 0.0
+			SpeedX = 0.0
 
 			return
 		}
@@ -134,7 +132,7 @@ func (p *PlayerMovement) Update(ecs *ecs.ECS) {
 
 			if interactible != nil {
 				interactible.Interact(ecs)
-				return
+
 			}
 			p.keepMoving = false
 			SpeedY = 0.0
@@ -161,10 +159,10 @@ func (p *PlayerMovement) Update(ecs *ecs.ECS) {
 
 			if interactible != nil {
 				interactible.Interact(ecs)
-				return
+				// return
 			}
 			p.keepMoving = false
-			SpeedY = 0.0
+			SpeedX = 0.0
 			return
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) {
